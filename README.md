@@ -1,6 +1,5 @@
 # Contents
-This repository serves as a short demonstration on how to use the code of the paper
-`Computing non-stationary (s,S) policies using approximate dynamic programming`
+This repository presents the core features of the code that lies at the heart of the article `Computing non-stationary (s,S) policies using approximate dynamic programming` and presents how to use the code using a toy example.
 
 # Files
 - `env.yml`: File to create a conda environment with the required libraries.
