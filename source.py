@@ -108,7 +108,7 @@ def discrete_min_kconvex(G: callable, S_upper: int, K: float, step: int):
     Parameters
     ----------
     G : callable
-        A
+        The optimal cost function
     S_upper : int
         Upper bound on S
     K : real number
@@ -121,13 +121,12 @@ def discrete_min_kconvex(G: callable, S_upper: int, K: float, step: int):
     s : int
         Reorder point s
     S : int
-        Up-to-order level s
+        Up-to-order level S
     """
     
     # initialize values
     S, y, current_min = S_upper, S_upper, G(S_upper)
     current_fv = current_min
-    nfev=1
 
     # Termination criterion exploits G's K-convexity in two ways:
     # 1. If current function value exceeds minimum by more than K, we have definitely passed the minimum and can stop
@@ -138,7 +137,10 @@ def discrete_min_kconvex(G: callable, S_upper: int, K: float, step: int):
         if current_fv < current_min: # if function value at new S-guess is lower, update S estimate and minimum function value
             S = y
             current_min = current_fv
-        nfev += 1 # update function evaluation counter
-    s = y # reorder point is current function argument, as we now have S=argmin(G), G(s)>=G(S)+K
+    # policy prescribes order when I<s
+    if current_fv == current_min + K:
+        s = y # G(y)=G(S)+K --> order for I<y
+    else:
+        s = y+step # G(y)>G(S)+K --> order for I<=y, i.e. approx. I<y+step
     
-    return s, S
+    return s, S, current_min
